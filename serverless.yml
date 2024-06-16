@@ -1,0 +1,31 @@
+# "org" ensures this Service is used with the correct Serverless Framework Access Key.
+# "app" enables Serverless Framework Dashboard features and sharing them with other Services.
+app: password
+# "service" is the name of this project. This will also be added to your AWS resource names.
+service: password
+
+provider:
+    name: aws
+    runtime: nodejs20.x
+    iam:
+        role:
+            name: serverless-my-ssm-role-${env:STAGE, "prod"}
+            statements:
+                - Effect: "Allow"
+                  Resource: "*"
+                  Action:
+                      - "ssm:GetParameter"
+                      - "ssm:GetParameters"
+                      - "ssm:GetParametersByPath"
+                      - "ssm:GetParameterHistory"
+                      - "ssm:DescribeParameters"
+
+functions:
+    api:
+        handler: src/handler.handler
+        events:
+            - httpApi: "*"
+
+plugins:
+    - serverless-offline
+    - serverless-dotenv-plugin
