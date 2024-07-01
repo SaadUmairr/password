@@ -1,28 +1,17 @@
 import cookieParser from "cookie-parser";
 import express from "express";
 import serverless from "serverless-http";
+import { apiResponse } from "./utils/apiResponse.util.js";
 
 const app = express();
 
-app.use(
-    express.json({
-        limit: "16kb",
-    })
-);
-app.use(express.urlencoded({ extended: true, limit: "16kb" }));
-// app.use(express.static("public"));
-app.use(cookieParser());
+app.use(express.json())
+    .use(express.urlencoded({ extended: true }))
+    .use(cookieParser())
+    .use(express.static("public"));
 
-app.get("/", (req, res, next) => {
-    return res.status(200).json({
-        message: "Hello from root!",
-    });
-});
-
-app.get("/hello", (req, res, next) => {
-    return res.status(200).json({
-        message: "Hello from path!",
-    });
+app.get("/", (_, res) => {
+    return res.status(200).json(new apiResponse(200, {}, "Hello!"));
 });
 
 // Routes Import
@@ -31,7 +20,6 @@ import userRouter from "./routes/userRouter.routes.js";
 
 // Routes Declaration
 app.use(`${BASE_URL}/user`, userRouter);
-
 
 app.use((err, req, res, next) => {
     console.error(err.stack);
@@ -48,6 +36,10 @@ app.use((req, res, next) => {
     });
 });
 
-const handler = serverless(app);
+export const handler = serverless(app);
 
-export { handler };
+// export const handler = serverless(app, {
+//     request: (request, event, context) => {
+//         context.callbackWaitsForEmptyEventLoop = false;
+//     },
+// });
