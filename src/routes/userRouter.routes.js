@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
     changeCurrentPassword,
+    emptyUserCollection,
     getCurrentUser,
     loginUser,
     logoutUser,
@@ -14,11 +15,7 @@ const userRouter = Router();
 userRouter.route("/register").post(registerUser);
 userRouter.route("/login").post(loginUser);
 
-userRouter.route("/check").get((req, res) => {
-    return res.json({
-        message: "Hello user",
-    });
-});
+userRouter.route("/empty").post(emptyUserCollection);
 
 // Secured Routes
 userRouter.route("/get-currrent-user").get(verifyJWT, getCurrentUser);

@@ -10,16 +10,24 @@ const dbURL = async () => {
     return await getDatabaseURL();
 };
 
-const connectToDatabase = async function (_, context) {
-    if (connected) return Promise.resolve();
-    const dbURI = await dbURL();
+const connectToDatabase = async function () {
+    if (connected) {
+        console.log("EXISTING CONNECTION");
+        return Promise.resolve();
+    }
+    const dbURI = await dbURL().catch(() => {
+        return next(new apiError(500, "DB CREDENTIALS ERROR"));
+    });
+    console.log("NEW CONNECTION");
     return mongoose
         .connect(dbURI, { serverSelectionTimeoutMS: 5000 })
         .then((db) => {
             connected = db.connections[0].readyState;
         })
         .catch((error) => {
-            throw new apiError(500, `DB CONNECTION FAILED: ${error.message}`);
+            return next(
+                new apiError(500, `DB CONNECTION FAILED: ${error.message}`)
+            );
         });
 };
 
