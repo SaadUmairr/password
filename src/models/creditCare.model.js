@@ -56,4 +56,5 @@ const creditCardSchema = new Schema(
     { timestamps: true }
 );
 
-export const CreditCard = model("CreditCard", creditCardSchema);
+export const CreditCard =
+    mongoose.models.CreditCard || model("CreditCard", creditCardSchema);

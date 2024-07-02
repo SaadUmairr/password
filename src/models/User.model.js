@@ -1,6 +1,6 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { Schema, model } from "mongoose";
+import mongoose, { Schema, model } from "mongoose";
 import { getAccessTokenSecret, getRefreshTokenSecret } from "../lib/secret.js";
 
 const userSchema = new Schema(
@@ -88,4 +88,4 @@ userSchema.methods.generateRefreshToken = async function () {
     );
 };
 
-export const User = model("User", userSchema);
+export const User = mongoose.models.User || model("User", userSchema);

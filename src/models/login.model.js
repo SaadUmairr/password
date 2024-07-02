@@ -27,4 +27,4 @@ const loginSchema = new Schema(
     { timestamps: true }
 );
 
-export const LoginSchema = model("Login", loginSchema);
+export const LoginSchema = mongoose.models.Login || model("Login", loginSchema);

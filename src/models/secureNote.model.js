@@ -21,4 +21,5 @@ const secureNoteSchema = new Schema(
     { timestamps: true }
 );
 
-export const securedNoteSchema = model("SecureNote", secureNoteSchema);
+export const securedNoteSchema =
+    mongoose.models.SecureNote || model("SecureNote", secureNoteSchema);

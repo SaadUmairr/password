@@ -62,4 +62,4 @@ const idSchema = new Schema({
     },
 });
 
-export const IDSchema = model("Identity", idSchema);
+export const IDSchema = mongoose.models.Identity || model("Identity", idSchema);
