@@ -1,4 +1,4 @@
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { Schema, model } from "mongoose";
 import { getAccessTokenSecret, getRefreshTokenSecret } from "../lib/secret.js";
@@ -21,6 +21,12 @@ const userSchema = new Schema(
             trim: true,
             minLength: 3,
             lowercase: true,
+        },
+        phone: {
+            type: String,
+            required: [true, "Phone Number is required"],
+            unique: true,
+            trim: true,
         },
         password: {
             type: String,

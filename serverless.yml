@@ -7,6 +7,26 @@ service: password
 provider:
     name: aws
     runtime: nodejs20.x
+    timeout: 15
+
+    httpApi:
+        # cors:
+        #     allowedOrigins:
+        #         - "*"
+        #     allowedHeaders:
+        #         - Content-Type
+        #         - X-Amz-Date
+        #         - Authorization
+        #         - X-Api-Key
+        #         - X-Amz-Security-Token
+        #         - X-Amz-User-Agent
+        #     allowedMethods:
+        #         - OPTIONS
+        #         - GET
+        #         - POST
+        #         - PUT
+        #         - DELETE
+        #         - PATCH
     iam:
         role:
             name: serverless-my-ssm-role-${env:STAGE, "prod"}
